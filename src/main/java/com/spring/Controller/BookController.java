@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.DTO.BookDTO;
 import com.spring.DTO.BookPageDTO;
@@ -23,7 +24,8 @@ public class BookController {
 	final static int BLOCK = 5; 
 	final static int RECORD = 10; 
 	
-	@RequestMapping(value="/booklist", method={RequestMethod.GET, RequestMethod.POST})
+	
+	@RequestMapping(value="/", method={RequestMethod.GET, RequestMethod.POST})
 	public String list(
 			@RequestParam(value="page", required=false, defaultValue="1") int ipage, 
 			@ModelAttribute BookPageDTO bookPageDTO,
@@ -31,13 +33,10 @@ public class BookController {
 		
 		int count = bookService.selectCount(); 
 		int pageCount = count / RECORD;
-		//System.out.println(pageCount);
-		System.out.println(bookPageDTO.toString());
 		
 		if(count % 5 > 0) pageCount++; 
 		List<BookDTO> list = bookService.selectList(ipage, bookPageDTO); 
-		//System.out.println(list.size());
-		
+				
 		int prevPage = ((ipage-1)/BLOCK*BLOCK)+1; 
 		int nextPage = ((ipage-1)/BLOCK*BLOCK)+BLOCK; 
 		
@@ -51,5 +50,12 @@ public class BookController {
 		model.addAttribute("bookPageDTO",bookPageDTO);
 		
 		return "booklist";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/test", method=RequestMethod.GET)
+	public String test(String no){
+		System.out.println("ok");
+		return no+" 에이작스 입니다.";
 	}
 }

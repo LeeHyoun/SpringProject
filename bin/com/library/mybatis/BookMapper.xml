@@ -31,4 +31,8 @@
 			order by book_no asc) where r BETWEEN #{start} AND #{end} 
 		]]>
 	</select>
+	
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT count(*) FROM book_table
+	</select>
 </mapper>

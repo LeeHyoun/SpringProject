@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.library.mybatis.Usr">
+
+	<resultMap type="Usr" id="UsrResultMap">
+		<result column="usr_Id" property="usrId" />
+		<result column="usr_Name" property="usrName" />
+		<result column="usr_Pw" property="usrPw" />
+		<result column="usr_Gender" property="usrGender" />
+		<result column="usr_Birth" property="usrBirth" />
+		<result column="usr_Email" property="usrEmail" />
+		<result column="usr_Mobile" property="usrMobile" />
+		<result column="usr_Hp" property="usrHp" />
+		<result column="usr_Addr1" property="usrAddr1" />
+		<result column="usr_Addr2" property="usrAddr2" />
+		<result column="usr_Indate" property="usrIndate" />
+	</resultMap>
+
+	<select id="getUsr" parameterType="java.lang.String" resultMap="UsrResultMap">
+	<![CDATA[
+		select usr_Id, usr_Name, usr_Pw, usr_Gender, usr_Birth, usr_Email, usr_Mobile, usr_Hp, usr_Addr1, usr_Addr2, usr_Indate from usr_table where usr_Id = #{value}
+	]]>
+	</select>
+</mapper> 
+	
