@@ -13,8 +13,7 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -22,49 +21,110 @@
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css">
 
-<title>?????</title>
+<style type="text/css">
+pre {
+	white-space: pre-wrap; /* CSS3*/
+	white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+	white-space: -pre-wrap; /* Opera 4-6 */
+	white-space: -o-pre-wrap; /* Opera 7 */
+	word-wrap: break-all; /* Internet Explorer 5.5+ */
+}
+</style>
+
+<title>도서리스트</title>
 
 <script>
 	var login_flag = 0;
 	var getlist_flag = 0;
-	//로그인 버튼을 눌렀을떄
-	$(function() {
+
+	 $(document).ready(function(){ 		
 		$("#loginbox").hide();
-		$("#showgetlist").hide();
 		$("#accordion").accordion({
 			collapsible : true
 		});
-	});
-
-	function login() {
-		if (loginflag == 0) {
-			$("#loginbox").show();
-			loginflag = 1;
-		} else if (loginflag == 1) {
-			$("#loginbox").hide();
-			loginflag = 0;
+	 });
+	 
+	 
+	// 로그인 <div> 보이기
+	function loginshow(){
+		if (login_flag == 0) {
+			$("#loginbox").show("slow");
+			login_flag = 1;
+		} else {
+			$("#loginbox").hide("slow");
+			login_flag = 0;
 		}
 	}
-
-	function bookshow(no) {
-		
+	
+	//로그인 처리
+	function login() {
+		//document.loginform.submit();
+	
+		var formData = $("#loginform").serialize(); // form의 데이터를 가져온다.
+		//alert(formData);
 		
 		$.ajax({
+			type : "POST",
+		   	url : "usrlogin",
+		   	data : formData,
+		   	success :function(data) {
+			
+		   		// 서버에서 Return된 값으로 중복 여부를 사용자에게 알려줍니다.
+		   		$("#loginbox").hide();
+		   		login_flag = 0;
+		   		location.replace('/'); 
+			}
+		});
+			 
+	}
+	
+
+	function logout(usrId) {
+		alert(usrId);
+		$.ajax({
+			type : "POST",
+		   	url : "logout",
+		   	data : {
+		   		"usrId" : usrId
+		   	},
+		   	success :function(data) {
+		   		$("#listbox").show();
+				alert('로그아웃 되었습니다.');
+				
+				location.replace('/');
+			}
+		});
+	}
+
+	
+	function bookshow(bookNo) {
+		//alert(bookNo);
+		$.ajax({
 			// type을 설정합니다.
-			type : 'GET',
-			url : "test",
-			// 사용자가 입력하여 id로 넘어온 값을 서버로 보냅니다.
+			type : 'post',
+			url : "detailbook",
 			data : {
-				"no" : no
+				"bookNo" : bookNo
 			},
 			// 성공적으로 값을 서버로 보냈을 경우 처리하는 코드입니다.
 			success : function(data) {
 				// 서버에서 Return된 값으로 중복 여부를 사용자에게 알려줍니다.
+				alert(data.val());
 			}
 		});
 	}
-</script>
 
+	function bookupdate(bookno) {
+		alert(bookno);
+	}
+
+	function bookdelete(bookno) {
+		alert(bookno);
+	}
+		
+		
+	
+</script>
 
 
 </head>
@@ -78,28 +138,27 @@
 		<!-- ###################################################################################   로그인  -->
 		<!-- 로그인 안했을때 로그인박스시작 -->
 		<div class="panel-body">
-
 			<c:if test="${empty sessionScope.usr }">
 				<div id="loginbox">
 					<form id="loginform" class="form-horizontal" name="loginform"
-						method="POST" action="usrlogin">
+						method="POST">
 						<div class="form-group">
 							<label for="inputId" class="col-sm-3 control-label">ID</label>
 							<div class="col-sm-5">
 								<input type="text" id="inputid" class="form-control"
-									name="usrId" placeholder="ID">
+									name="usrId" placeholder="ID" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="inputPassword" class="col-sm-3 control-label">Password</label>
 							<div class="col-sm-5">
 								<input type="password" id="inputPassword" class="form-control"
-									name="usrPw" placeholder="Password">
+									name="usrPw" placeholder="Password" />
 							</div>
 							<div id="loginbtn" class="form-group" style="float: left;">
 								<div class="col-sm-offset-2 col-sm-9">
 									<input type="button" class="btn btn-default" onclick="login();"
-										value="Log in">
+										value="Log in" />
 								</div>
 							</div>
 						</div>
@@ -109,6 +168,8 @@
 		</div>
 	</div>
 
+
+
 	<!-- ###################################################################################   리스트 보기  -->
 	<div id="listbox" class="panel panel-success">
 		<div class="panel-heading">
@@ -117,8 +178,15 @@
 				<div id="loginbtn" class="form-group"
 					style="float: right; padding-right: 3%;">
 					<div class="col-sm-offset-2 col-sm-9">
-						<input type="button" class="btn btn-default" onclick="login();"
-							value="Log in" style="color: red; font-size: 12pt">
+						<c:if test="${empty sessionScope.usr}">
+						<input type="button" class="btn btn-default" onclick="loginshow()"
+							value="Login" style="color: red; font-size: 12pt;" />
+						</c:if>
+						
+						<c:if test="${not empty sessionScope.usr}">
+						<input type="button" id="logout" class="btn btn-default" onclick="logout('${usr.usrId}')"
+							value="Logout" style="color: red; font-size: 12pt;" />
+						</c:if>
 					</div>
 				</div>
 			</h3>
@@ -127,22 +195,53 @@
 			<!-- 레코드 출력 -->
 			<c:if test="${bookPageDTO.pageCount == 0 }">
 				<tr>
-					<td colspan="6" align="center" style="color: red;"><b>레코드가
-							없습니다.</b></td>
+					<td colspan="6" align="center" style="color: red;"><b>레코드가없습니다.</b></td>
 				</tr>
 			</c:if>
 
-			<c:if test="${bookPageDTO.pageCount != 0 }">
-				<c:forEach items="${list }" var="Book" varStatus="status">
-					<div id="accordion" onclick="bookshow('${Book.bookNo}')">
-						<h3>
-							번호:${Book.bookNo}/청구번호:${Book.bookCallnumber}:제목:${Book.bookTitle}</h3>
-						<div class="getdata"></div>
-					</div>
-				</c:forEach>
-			</c:if>
+			<div id="accordion">
+				<c:if test="${bookPageDTO.pageCount != 0 }">
+					<c:forEach items="${list }" var="Book" varStatus="status">
+
+						<h3 onclick="bookshow('${Book.bookNo}')">
+							번호:${Book.bookNo}&nbsp;&nbsp;청구번호:${Book.bookCallnumber}&nbsp;&nbsp;&nbsp;&nbsp;제목:${Book.bookTitle}
+						</h3>
+						<!-- details Book-->
+						<div class="panel-body">
+							<div id="libraryinfo" class="posts">
+								<div style="float: left;">
+									<div
+										style="width: 140px; height: 110px; overflow: hidden; margin-left: -20px;"
+										class="col-sm-4 col-md-3 bookimg">
+										<div class="thumbnail">
+											<img src="images/book/${Book.bookImg}" alt="없음."
+												style="width: 110px; height: auto;">
+										</div>
+									</div>
+
+									<div>
+										<p>도서이름 : ${Book.bookTitle}</p>
+										<p>저자 : ${Book.bookWriter}</p>
+										<p>출판사 : ${Book.bookCompany}</p>
+										<p>청구번호 : ${Book.bookCallnumber}</p>
+										<p style="padding-left: 120px;">ISBN : ${Book.bookIsbn}</p>
+										<p>줄거리</p>
+										<p>
+										<pre>${Book.bookContent}</pre>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div style="margin-left: 50px; float: right;">
+								<input type="button" value="수정"
+									onclick="bookupdate('${Book.bookNo}')"> <input
+									type="button" value="삭제" onclick="bookdelete('${Book.bookNo}')">
+							</div>
+						</div>
+					</c:forEach>
+				</c:if>
+			</div>
 		</div>
 	</div>
-
 </body>
 </html>

@@ -22,7 +22,7 @@
 
 	<select id="getUsr" parameterType="java.lang.String" resultMap="UsrResultMap">
 	<![CDATA[
-		select usr_Id, usr_Name, usr_Pw, usr_Gender, usr_Birth, usr_Email, usr_Mobile, usr_Hp, usr_Addr1, usr_Addr2, usr_Indate from usr_table where usr_Id = #{value}
+		select * from usr_table where usr_Id = #{value}
 	]]>
 	</select>
 </mapper> 

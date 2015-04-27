@@ -1,0 +1,29 @@
+  --문제 :  org.springframework.transaction.CannotCreateTransactionException: Could not open JDBC Connection for transaction; nested exception is java.sql.SQLException: Connections could not be acquired from the underlying database!
+
+  -ORA-12514:TNS리스너 에러 
+  
+  해결 :
+  
+	   "D:\app\Administrator\product\11.2.0\dbhome_1\NETWORK\ADMIN" 경로의 "listener.ora" 파일의 
+	  
+		  SID_LIST_LISTENER =
+		  (SID_LIST =
+		    (SID_DESC =
+		      (SID_NAME = orcl)   <<<------ SID_NAME 이 기본값으로 셋팅되어있었어
+		      								tnsname.ora 파일의 해당 DB에 별명인 orcl로 설정
+		      (ORACLE_HOME = D:\app\Administrator\product\11.2.0\dbhome_1)
+		      #(PROGRAM = extproc) <<<------  이부분은 삭제 처리 
+		      (ENVS = "EXTPROC_DLLS=ONLY:D:\app\Administrator\product\11.2.0\dbhome_1\bin\oraclr11.dll")
+		    )
+		  )
+		  
+		  저장 후 oracle 과  listener service 를 재시작 해주면 됩니다.
+
+	-- 대부분의 TNS 관련 에러는 설정파일 상의 문제가 많음.
+	
+	-- 참조 : http://hulbo.tistory.com/28
+		  
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+

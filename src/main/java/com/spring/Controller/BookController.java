@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,10 +34,10 @@ public class BookController {
 		
 		int count = bookService.selectCount(); 
 		int pageCount = count / RECORD;
-		
+		System.out.println(count);
 		if(count % 5 > 0) pageCount++; 
 		List<BookDTO> list = bookService.selectList(ipage, bookPageDTO); 
-				
+		System.out.println(list.size());
 		int prevPage = ((ipage-1)/BLOCK*BLOCK)+1; 
 		int nextPage = ((ipage-1)/BLOCK*BLOCK)+BLOCK; 
 		
@@ -52,10 +53,20 @@ public class BookController {
 		return "booklist";
 	}
 	
+	
+	//도서상세보기
+	@ResponseBody
+	@RequestMapping(value="/detailbook",method={RequestMethod.GET, RequestMethod.POST})
+	public BookDTO detailbook(@RequestParam(value="bookno") int bookno) throws Exception{
+		BookDTO bookdto = bookService.getone(bookno);//선택도서번호에 해당하는 도서리스트 가져오기
+		
+		return bookdto;
+	}
+	
+	
 	@ResponseBody
 	@RequestMapping(value="/test", method=RequestMethod.GET)
-	public String test(String no){
-		System.out.println("ok");
-		return no+" 에이작스 입니다.";
+	public String test(){
+		return " 에이작스 입니다.";
 	}
 }

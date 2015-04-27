@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.DTO.UsrDTO;
 import com.spring.Service.UsrService;
@@ -20,29 +21,31 @@ public class UsrController {
 	@Autowired
 	UsrService usrService;
 	
+	@ResponseBody
 	@RequestMapping(value = "/usrlogin", method = { RequestMethod.POST })
 	public String login(HttpServletRequest request,
 			@RequestParam("usrId") String usrId,
-			@RequestParam("usrPw") String usrPw,
-			Model model) throws Exception {
-
+			@RequestParam("usrPw") String usrPw	) throws Exception {
+		
+			System.out.println(usrId);
 			UsrDTO usr = usrService.getUsr(usrId);
 
-			if (usr == null) {
-				return "usrJoin";
+			if (usr == null) { //아이디가 없을시 
+				return "/";
 
 			} else if (usrPw.equals(usr.getUsrPw())) {
 				HttpSession session = request.getSession();
 				session.setAttribute("usr", usr);
 				System.out.println(usr);
-				return "redirect:/booklist";
+				return "/";
 
-			} else {
-				return "usrJoin";
+			} else { //비밀번호가 틀릴시
+				return "/";
 			}
 			
 	}
-
+	
+	@ResponseBody
 	@RequestMapping(value = "/logout", method =  RequestMethod.POST)
 	public String logout(HttpServletRequest request,
 			HttpServletResponse response, @RequestParam("usrId") String usrId,
@@ -53,6 +56,6 @@ public class UsrController {
 		session.removeAttribute("usrid");
 		session.invalidate();
 
-		return "usrlogin";
+		return "/";
 	}
 }

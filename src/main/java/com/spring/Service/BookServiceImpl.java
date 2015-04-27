@@ -28,4 +28,10 @@ public class BookServiceImpl implements BookService {
 	public List<BookDTO> selectList(int ipage, BookPageDTO  bookPageDTO) {
 		return bookDAO.selectList(ipage, bookPageDTO);
 	}
+	
+	@Override
+	public BookDTO getone(int bookno) {
+		
+		return bookDAO.getone(bookno);
+	}
 }

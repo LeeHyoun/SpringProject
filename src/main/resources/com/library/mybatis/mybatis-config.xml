@@ -8,10 +8,12 @@
 	<typeAliases>
 		<typeAlias type="com.spring.DTO.BookDTO" alias="Book" />
 		<typeAlias type="com.spring.DTO.BookPageDTO" alias="BookPageDTO" />
+		<typeAlias type="com.spring.DTO.UsrDTO" alias="Usr" />
 	</typeAliases>
 
 	<mappers>		
 		<mapper resource="com/library/mybatis/BookMapper.xml"/>
+		<mapper resource="com/library/mybatis/UsrMapper.xml"/>
 	</mappers>
 
 </configuration>

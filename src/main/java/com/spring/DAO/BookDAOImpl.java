@@ -39,4 +39,11 @@ public class BookDAOImpl implements BookDAO{
 		int count = sqlSession.selectOne(NS + "selectCount"); 
 		return count;
 	}
+	
+	@Override
+	public BookDTO getone(int bookno) {
+		BookDTO bookdto = new BookDTO(); 
+		bookdto = sqlSession.selectOne(NS + "getone", bookno);
+		return bookdto;
+	}
 }

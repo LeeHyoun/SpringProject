@@ -8,4 +8,5 @@ import com.spring.DTO.BookPageDTO;
 public interface BookDAO {
 	public List<BookDTO> selectList(int pg,BookPageDTO  bookPageDTO);
 	public int selectCount();
+	BookDTO getone(int bookno);
 }
