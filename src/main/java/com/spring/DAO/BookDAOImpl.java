@@ -46,4 +46,10 @@ public class BookDAOImpl implements BookDAO{
 		bookdto = sqlSession.selectOne(NS + "getone", bookno);
 		return bookdto;
 	}
+	
+	@Override
+	public BookDTO addBook(BookDTO bookDTO) {
+		sqlSession.insert(NS + "addBook", bookDTO);
+		return bookDTO;
+	}
 }

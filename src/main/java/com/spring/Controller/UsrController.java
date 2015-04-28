@@ -30,19 +30,14 @@ public class UsrController {
 			System.out.println(usrId);
 			UsrDTO usr = usrService.getUsr(usrId);
 
-			if (usr == null) { //아이디가 없을시 
-				return "/";
-
-			} else if (usrPw.equals(usr.getUsrPw())) {
+			if (usrPw.equals(usr.getUsrPw())) {
 				HttpSession session = request.getSession();
 				session.setAttribute("usr", usr);
 				System.out.println(usr);
 				return "/";
-
-			} else { //비밀번호가 틀릴시
-				return "/";
 			}
 			
+			return "/";
 	}
 	
 	@ResponseBody

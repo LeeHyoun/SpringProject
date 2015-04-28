@@ -34,4 +34,9 @@ public class BookServiceImpl implements BookService {
 		
 		return bookDAO.getone(bookno);
 	}
+	
+	@Override
+	public BookDTO addBook(BookDTO bookDTO){
+		return bookDAO.addBook(bookDTO);
+	}
 }

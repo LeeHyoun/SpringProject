@@ -57,16 +57,21 @@ public class BookController {
 	//도서상세보기
 	@ResponseBody
 	@RequestMapping(value="/detailbook",method={RequestMethod.GET, RequestMethod.POST})
-	public BookDTO detailbook(@RequestParam(value="bookno") int bookno) throws Exception{
-		BookDTO bookdto = bookService.getone(bookno);//선택도서번호에 해당하는 도서리스트 가져오기
+	public BookDTO detailbook(@RequestParam(value="bookNo") int bookNo) throws Exception{
+		BookDTO bookdto = bookService.getone(bookNo);//선택도서번호에 해당하는 도서리스트 가져오기
 		
 		return bookdto;
 	}
 	
-	
-	@ResponseBody
-	@RequestMapping(value="/test", method=RequestMethod.GET)
-	public String test(){
-		return " 에이작스 입니다.";
+	@RequestMapping(value="/write", method={RequestMethod.POST})
+	public String write(
+			@ModelAttribute BookDTO bookDTO,
+			Model model) throws Exception {
+		System.out.println(bookDTO.toString());
+		bookService.addBook(bookDTO);
+		
+		return "/";
 	}
+	
+	
 }

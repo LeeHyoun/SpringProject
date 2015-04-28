@@ -10,5 +10,6 @@ public interface BookService {
 	public int selectCount(); 
 	public List<BookDTO> selectList(int ipage, BookPageDTO bookPageDTO); 
 	public BookDTO getone(int bookno);
+	public BookDTO addBook(BookDTO bookDTO);
 
 }	

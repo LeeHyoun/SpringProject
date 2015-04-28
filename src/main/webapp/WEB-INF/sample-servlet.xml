@@ -40,7 +40,6 @@
 	<!-- AOP를 bean 으로 셋팅 -->
 	<bean id="testLogger" class="com.aop.logger.TestLogger" /> 
 	
-	
 	<!-- 기본 뷰를 jsp 로 처리  -->
 	<bean id="internalResourceViewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -52,6 +51,7 @@
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
 		p:maxUploadSize="104857600" p:maxInMemorySize="10485760" />
+
 
 	<!-- api json관련된 출력 -->
 	<bean

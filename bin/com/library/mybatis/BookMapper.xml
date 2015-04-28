@@ -27,8 +27,8 @@
 	<select id="selectList" parameterType="BookPageDTO" resultMap="BookResultMap" >
 		<![CDATA[
 			select BOOK.* from (select rownum R, BOOK_TABLE.* 
-				from (select * from BOOK_TABLE order by book_no asc) BOOK_TABLE
-			order by book_no asc) BOOK where r BETWEEN #{start} AND #{end} 
+				from (select * from BOOK_TABLE order by book_no desc) BOOK_TABLE) BOOK 
+				where r BETWEEN #{start} AND #{end} 
 		]]>
 	</select>
 	
@@ -39,4 +39,12 @@
 	<select id="getone" parameterType="java.lang.Integer" resultMap="BookResultMap">
 		select * from book_table where book_no=#{bookNo}
 	</select>
+	 
+	<insert id="addBook" parameterType="Book" useGeneratedKeys="true">
+		<selectKey keyProperty="bookNo" resultType="java.lang.Integer" order="BEFORE">
+		    	SELECT book_seq.NEXTVAL as bookNo FROM DUAL
+		</selectKey>
+		Insert into BOOK_TABLE (BOOK_NO,GENRE_CODE,BOOK_BRINGOUT,BOOK_ADDDAY,BOOK_STORED,BOOK_CALLNUMBER,BOOK_ISBN,BOOK_IMG,BOOK_PRICE,BOOK_WRITER,BOOK_TITLE,BOOK_COMPANY,BOOK_CONTENT,BOOK_STATE)	
+		values (#{bookNo},#{genreCode},#{bookBringout},sysdate,#{bookStored},#{bookCallnumber},#{bookIsbn},#{bookImg},#{bookPrice},#{bookWriter},#{bookTitle},#{bookCompany},#{bookContent},#{bookState})
+	</insert>
 </mapper>
