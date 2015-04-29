@@ -21,7 +21,7 @@ public class UsrController {
 	@Autowired
 	UsrService usrService;
 	
-	@ResponseBody
+	
 	@RequestMapping(value = "/usrlogin", method = { RequestMethod.POST })
 	public String login(HttpServletRequest request,
 			@RequestParam("usrId") String usrId,
@@ -37,10 +37,10 @@ public class UsrController {
 				return "/";
 			}
 			
-			return "/";
+			return "loginform";
 	}
 	
-	@ResponseBody
+	
 	@RequestMapping(value = "/logout", method =  RequestMethod.POST)
 	public String logout(HttpServletRequest request,
 			HttpServletResponse response, @RequestParam("usrId") String usrId,
@@ -51,6 +51,6 @@ public class UsrController {
 		session.removeAttribute("usrid");
 		session.invalidate();
 
-		return "/";
+		return "loginform";
 	}
 }

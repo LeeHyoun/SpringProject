@@ -38,8 +38,8 @@ public class BookController {
 		if(count % 5 > 0) pageCount++; 
 		List<BookDTO> list = bookService.selectList(ipage, bookPageDTO); 
 		System.out.println(list.size());
-		int prevPage = ((ipage-1)/BLOCK*BLOCK)+1; 
-		int nextPage = ((ipage-1)/BLOCK*BLOCK)+BLOCK; 
+		int prevPage = ((ipage-1)/BLOCK)+1; 
+		int nextPage = ((ipage-1)/BLOCK)+BLOCK; 
 		
 		bookPageDTO.setPrevPage(prevPage);
 		bookPageDTO.setNextPage(nextPage);
@@ -53,14 +53,11 @@ public class BookController {
 		return "booklist";
 	}
 	
-	
 	//도서상세보기
 	@ResponseBody
 	@RequestMapping(value="/detailbook",method={RequestMethod.GET, RequestMethod.POST})
 	public BookDTO detailbook(@RequestParam(value="bookNo") int bookNo) throws Exception{
-		BookDTO bookdto = bookService.getone(bookNo);//선택도서번호에 해당하는 도서리스트 가져오기
-		
-		return bookdto;
+		return bookService.getone(bookNo);//선택도서번호에 해당하는 도서리스트 가져오기
 	}
 	
 	@RequestMapping(value="/write", method={RequestMethod.POST})
@@ -72,6 +69,4 @@ public class BookController {
 		
 		return "/";
 	}
-	
-	
 }
