@@ -27,3 +27,14 @@
 
 
 
+-- 문제  : java.util.concurrent.ExecutionException: org.apache.catalina.LifecycleException: Failed to start component [StandardEngine[Catalina].StandardHost[localhost].StandardContext[]]
+
+-- tomcat 에러 또는 web.xml 설정파일 오타 및 설정에러
+
+	해결 : web.xml 오타 에러 ....... 
+	
+	미 해결시 : C:\java\apache-tomcat-7.0.57\lib 폴더의 servlet-api.jar 파일을 해당 java 의 lib 폴더에 붙여넣기
+	
+	
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	

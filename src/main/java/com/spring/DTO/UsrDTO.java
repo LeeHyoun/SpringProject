@@ -1,13 +1,26 @@
-package com.spring.DTO;
+package com.spring.dto;
+
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class UsrDTO {
 
+	@NotEmpty(message="아이디를 입력해 주세요!")
 	private String usrId;
+	
 	private String usrName;
+	
+	@NotEmpty
 	private String usrPw;
 	private String usrGender;
 	private String usrBirth;
+	
+	@Pattern(regexp="^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$")
+	@Email( message="이메일 형식이 틀렸어요!")
 	private String usrEmail;
+	
 	private String usrMobile;
 	private String usrMobile1;
 	private String usrMobile2;
@@ -17,6 +30,8 @@ public class UsrDTO {
 	private String usrAddr1;
 	private String usrAddr2;
 	private String usrIndate;
+	
+	
 	
 	public String getUsrId() {
 		return usrId;

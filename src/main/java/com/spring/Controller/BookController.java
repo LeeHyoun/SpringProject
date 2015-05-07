@@ -1,35 +1,38 @@
-package com.spring.Controller;
+package com.spring.controller;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.DTO.BookDTO;
-import com.spring.DTO.BookPageDTO;
-import com.spring.Service.BookService;
+import com.spring.dto.BookDTO;
+import com.spring.dto.BookPageDTO;
+import com.spring.service.BookService;
 
-@Controller
+@Controller 
 public class BookController {
 	
-	@Autowired
+	@Autowired    // bean 객체 주입
 	BookService bookService;
 	
 	final static int BLOCK = 5; 
 	final static int RECORD = 10; 
 	
-	
-	@RequestMapping(value="/", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="/list", method={RequestMethod.POST, RequestMethod.GET})
 	public String list(
 			@RequestParam(value="page", required=false, defaultValue="1") int ipage, 
-			@ModelAttribute BookPageDTO bookPageDTO,
+			@Valid @ModelAttribute BookPageDTO bookPageDTO,
+			HttpServletRequest request,
 			Model model) throws Exception{
 		
 		int count = bookService.selectCount(); 
@@ -48,25 +51,30 @@ public class BookController {
 		
 		model.addAttribute("BLOCK", BLOCK);
 		model.addAttribute("list", list);
-		model.addAttribute("bookPageDTO",bookPageDTO);
+		//model.addAttribute("bookPageDTO",bookPageDTO);
 		
 		return "booklist";
 	}
 	
 	//도서상세보기
-	@ResponseBody
-	@RequestMapping(value="/detailbook",method={RequestMethod.GET, RequestMethod.POST})
-	public BookDTO detailbook(@RequestParam(value="bookNo") int bookNo) throws Exception{
-		return bookService.getone(bookNo);//선택도서번호에 해당하는 도서리스트 가져오기
+	
+	@RequestMapping(value="/detailbook",method={RequestMethod.GET})
+	public @ResponseBody BookDTO detailbook(@RequestParam(value="bookNo") int bookNo) throws Exception{
+		
+		BookDTO bookDTO = bookService.getone(bookNo);//선택도서번호에 해당하는 도서리스트 가져오기
+		System.out.println(bookDTO);
+		
+		return bookDTO;
 	}
 	
+	//도서 등록
 	@RequestMapping(value="/write", method={RequestMethod.POST})
 	public String write(
-			@ModelAttribute BookDTO bookDTO,
-			Model model) throws Exception {
+			@ModelAttribute BookDTO bookDTO) throws Exception {
 		System.out.println(bookDTO.toString());
 		bookService.addBook(bookDTO);
 		
-		return "/";
+		return "booklist";
 	}
+
 }

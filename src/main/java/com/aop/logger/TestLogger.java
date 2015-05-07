@@ -16,9 +16,9 @@ import org.aspectj.lang.annotation.Pointcut;
 public class TestLogger {
 	
 	/*
-	 * 포인트컷은 결합점(Join points)을 지정하여 충고(Advice)가 언제 실행될지를 지정하는데 사용된다. 
+	 * 포인트컷은 결합점(Join points)을 지정하여  (Advice)가 언제 실행될지를 지정하는데 사용된다. 
 	 * Spring AOP는 Spring 빈에 대한 메소드 실행 결합점만을 지원하므로, 
-	 * Spring에서 포인트컷은 빈의 메소드 실행점을 지정하는 것으로 생각할 수 있다.
+	 * Spring에서 포인트컷은 "빈의 메소드 실행점"을 지정하는 것으로 생각할 수 있다.
 	 */
 	@Pointcut("execution(public * com.spring.Controller.*.*(..))")
 	public void targetMethod() {}
@@ -37,7 +37,7 @@ public class TestLogger {
 	}
 
 	/*
-	 * afterReturningTargetMethod() 충고는 targetMethod()로 정의된 포인트컷 후에 수행된다. 
+	 * afterReturningTargetMethod()  는 targetMethod()로 정의된 포인트컷 후에 수행된다. 
 	 * targetMethod() 포인트컷의 실행 결과는 retVal 변수에 저장되어 전달된다.
 	 */
 	@AfterReturning(pointcut = "targetMethod()", returning = "retVal")
@@ -49,7 +49,7 @@ public class TestLogger {
 	}
 
 	/*
-	 * afterThrowingTargetMethod() 충고는 targetMethod()로 정의된 포인트컷에서 예외가 발생한 후에 수행된다. 
+	 * afterThrowingTargetMethod()  는 targetMethod()로 정의된 포인트컷에서 예외가 발생한 후에 수행된다. 
 	 * targetMethod() 포인트컷에서 발생된 예외는 exception 변수에 저장되어 전달된다.
 	 */
 	@AfterThrowing(pointcut = "targetMethod()", throwing = "exception")
@@ -60,8 +60,8 @@ public class TestLogger {
 	}
 
 	/*
-	 * 메소드 수행 후 무조건 수행된다. After (finally) 충고는 @After 어노테이션을 사용한다. 
-	 * After 충고는 정상 종료와 예외 발생 경우를 모두 처리해야 하는 경우에 사용된다. 
+	 * 메소드 수행 후 무조건 수행된다. After (finally)  는 @After 어노테이션을 사용한다. 
+	 * After  는 정상 종료와 예외 발생 경우를 모두 처리해야 하는 경우에 사용된다. 
 	 * 리소스 해제와 같은 작업이 해당된다.
 	 */
 	@After("targetMethod()")
@@ -70,9 +70,9 @@ public class TestLogger {
 	}
 
 	/*
-	 * aroundTargetMethod() 충고는 파라미터로 ProceedingJoinPoint을 전달하며 
+	 * aroundTargetMethod()  는 파라미터로 ProceedingJoinPoint을 전달하며 
 	 * proceed() 메소드 호출을 통해 대상 포인트컷을 실행한다. 
-	 * 포인트컷 수행 결과값인 retVal을 Around 충고 내에서 변환하여 반환할 수 있음을 보여준다.
+	 * 포인트컷 수행 결과값인 retVal을 Around   내에서 변환하여 반환할 수 있음을 보여준다.
 	 */
 	@Around("targetMethod()")
 	public Object aroundTargetMethod(ProceedingJoinPoint thisJoinPoint)	throws Throwable {

@@ -1,9 +1,9 @@
-package com.spring.Service;
+package com.spring.service;
 
 import java.util.List;
 
-import com.spring.DTO.BookDTO;
-import com.spring.DTO.BookPageDTO;
+import com.spring.dto.BookDTO;
+import com.spring.dto.BookPageDTO;
 
 public interface BookService {
 	//board

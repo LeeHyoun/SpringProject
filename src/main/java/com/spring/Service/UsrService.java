@@ -1,6 +1,6 @@
-package com.spring.Service;
+package com.spring.service;
 
-import com.spring.DTO.UsrDTO;
+import com.spring.dto.UsrDTO;
 
 public interface UsrService {
 	

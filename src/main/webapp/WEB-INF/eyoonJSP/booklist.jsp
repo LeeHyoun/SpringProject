@@ -1,25 +1,25 @@
 <%@ page import="java.util.Calendar"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<link rel="stylesheet" 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet"	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<link rel="stylesheet" href="/resources/demos/style.css">
+<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
 
+<title>도서관리 시스템</title>
 <style type="text/css">
 pre {
 	white-space: pre-wrap; /* CSS3*/
@@ -30,7 +30,6 @@ pre {
 }
 </style>
 
-<title>도서리스트</title>
 
 <script>
 	$(function() {
@@ -50,23 +49,15 @@ pre {
 		//$("#listbox").hide();
 		$("#addbookbox").hide();
 		$("#accordion").accordion({
-			collapsible : true
-
+			collapsible : true,
+			active : false
+		
 		});
 	});
-
-	/// 로그인 <div> 보이기 
-	function loginshow() {
-		//loginbox
-		if (login_flag == 0) {
-			$("#loginbox").show();
-			login_flag = 1;
-		} else {
-			$("#loginbox").hide();
-			login_flag = 0;
-		}
-	}
+	
+		
 	function addbookshow() {
+		
 		if (addbook_flag == 0) {
 			$("#addbookbox").show();
 			addbook_flag = 1;
@@ -75,22 +66,43 @@ pre {
 			addbook_flag = 0;
 		}
 	}
+		
 	
-	
-
-	function bookshow(bookNo) {
-		//alert(bookNo);
+	function detailbook(bookNo) {
 		$.ajax({
 			// type을 설정합니다.
-			type : 'POST',
+			type : 'GET',
 			url : "detailbook",
+			//dataType : "JSON",
 			data : {
 				"bookNo" : bookNo
 			},
 			// 성공적으로 값을 서버로 보냈을 경우 처리하는 코드입니다.
 			success : function(data) {
 				// 서버에서 Return된 값으로 중복 여부를 사용자에게 알려줍니다.
-				alert(data);
+				var thumbnail = "";
+				
+				thumbnail += "<img src='images/book/" + data.bookImg + "'  style=' width: 110px; height: auto;'>";
+			
+				
+				var HTML = "";
+				
+				HTML += "<label>도서이름 : "+ data.bookTitle+"</label>";
+				
+				HTML += "<p>저자 : "+ data.bookWriter +" </p>";
+				HTML += "<p>출판사 : "+ data.bookCompany +"</p>";
+				HTML += "<p>청구번호 : "+ data.bookCallnumber +"</p>";
+				HTML += "<p style='padding-left: 120px;'>ISBN : "+ data.bookIsbn +"</p>";
+				HTML += "<p>줄거리</p>";
+				HTML += "<p>";
+				HTML += "<pre>"+ data.bookContent +"</pre>";
+				HTML += "</p>";
+				
+				$("#thumbnail"+data.bookNo).empty();
+				$("#detailsbook"+data.bookNo).empty();
+				
+				$("#thumbnail"+data.bookNo).append(thumbnail);
+				$("#detailsbook"+data.bookNo).append(HTML);	
 			}
 		});
 	}
@@ -103,7 +115,25 @@ pre {
 		alert(bookno);
 	}
 	
+	function logout(usrId) {
+		//alert(usrId);
+		$.ajax({
+			type : "POST",
+			url : "logout",
+			data : {
+				"usrId" : usrId
+			},
+			success : function(data) {
+				alert('로그아웃 되었습니다.');
+				$("#listDiv").empty();
+				$("#loginbox").show("slow");				
+			}
+		});
+	}
+	
 </script>
+
+<!-- 도서 등록 -->
 <script type="text/javascript">
 function addbook() {
 	var bookTitle = document.addBook.bookTitle.value;
@@ -184,16 +214,15 @@ function addbook() {
 	}
  	var genreCode = document.addBook.genreCode.value;
  	var bookStored = document.addBook.bookStored.value;
-	//alert(formData.bookImg);
+ 	
 	$.ajax({
-		// type을 설정합니다.
 		type : 'POST',
 		url : "write",
 		data : {
 			"bookTitle" : bookTitle,
 			"bookWriter" : bookWriter,
 			"bookCallnumber" : bookCallnumber,
-			"bookImg" : bookImg.substring(13),
+			"bookImg" : bookImg.substring(12),
 			"bookState" : bookState,
 			"bookBringout" : datepicker,
 			"bookCompany" : bookCompany,
@@ -212,23 +241,23 @@ function addbook() {
 			addbook_flag = 0;
 		}
 	});
-	
-	
 } 
 
-</script>
-</head>
 
+</script>
+
+</head>
 <body>
-	
+
 	<!-- ######################################################################################################   add Book -->
 	<div id="addbookbox" class="panel panel-primary">
 		<div class="panel-heading">
 			<h3>도서등록</h3>
+			
 		</div>
 		<div class="panel-body" align="center">
-			<div style=" width: 80%;">
-				<form method="POST" name="addBook" id="addBook" >
+			<div style="width: 60;">
+				<form method="POST" name="addBook" id="addBook">
 					<h1>도서등록</h1>
 					<table class="table table-hover">
 						<tr>
@@ -251,36 +280,39 @@ function addbook() {
 						</tr>
 						<tr>
 							<td>입고방법</td>
-							<td><input type="radio" id="bookStored" name="bookStored"	value="구매" checked="checked"> 구매 
-								<input type="radio"	id="bookStored" value="기증" name="bookStored">기증</td>
+							<td><input type="radio" id="bookStored" name="bookStored" value="구매" checked="checked">
+							    구매 
+							    <input type="radio"	id="bookStored" value="기증" name="bookStored">기증</td>
 							<td>출판사</td>
 							<td><input type="text" name="bookCompany" id="bookCompany"></td>
-						</tr>
-						<tr>
-							<td>청구번호</td>
-							<td><input type="text" name="bookCallnumber"
-								id="bookCallnumber"></td>
-							<td>ISBN</td>
-							<td><input type="text" name="bookIsbn" id="bookIsbn"
-								maxlength="13"></td>
 						</tr>
 						<tr>
 							<td>이미지</td>
 							<td><input type="file" name="bookImg" id="bookImg">
 							</td>
+							<td>ISBN</td>
+							<td><input type="text" name="bookIsbn" id="bookIsbn" maxlength="13"></td>
+						</tr>
+						<tr>
+							<td>청구번호</td>
+							<td><input type="text" name="bookCallnumber" id="bookCallnumber"></td>
 							<td>가격</td>
 							<td><input type="text" name="bookPrice" id="bookPrice">원</td>
 						</tr>
+						
 						<tr>
 							<td>도서상태</td>
-							<td><input type="text" name="bookState" id="bookState"></td>
+							<td><input type="text" name="bookState" id="bookState"  placeholder="정상"></td>
 							<td>내용</td>
-							<td><textarea cols="25" rows="5" type="text"
-									name="bookContent" id="bookContent"></textarea></td>
+							<td><textarea cols="25" rows="5" type="text" name="bookContent" id="bookContent"></textarea></td>
 						</tr>
 						<tr align="right">
-							<td colspan="4" style="width: 440px;">
-							<input type="button"	class="btn btn-default" onclick="addbook()" value="등록"></td>
+							<td colspan="3" ></td>
+							<td >
+								<input type="reset" class="btn btn-default"  value="초기화">
+								<input type="button" class="btn btn-default" onclick="addbook()" value="등록">
+								<input type="reset" class="btn btn-default" onclick="addbookshow()" value="닫기">
+							</td>
 						</tr>
 					</table>
 				</form>
@@ -293,16 +325,26 @@ function addbook() {
 	<div id="listbox" class="panel panel-success">
 		<div class="panel-heading">
 			<h3>
-				리스트 
+				리스트
 				<div id="loginbtn" class="form-group" style="float: right; padding-right: 5%;">
 					<div class="col-sm-offset-2 col-sm-9">
-						<input type="button" class="btn btn-default"
-							onclick="addbookshow()" value="도서등록"
-							style="float: right; color: green; font-size: 12pt;" />
+						<c:if test="${not empty sessionScope.usr}">
+						
+							<!-- ############################################################# 로그아웃 , 도서등록 -->
+							<div style="width: 300px;">
+								<input type="button" id="logout" class="btn btn-default"
+									onclick="logout('${usr.usrId}')" value="Logout"
+									style="float: right; color: red; font-size: 12pt;" />
+							</div>
+							<div class="col-sm-offset-2 col-sm-9">
+								<input type="button" class="btn btn-default"
+									onclick="addbookshow()" value="도서등록"
+									style="float: right; color: green; font-size: 12pt;" />
+							</div>
+						</c:if>
 					</div>
-				</div>	
+				</div>
 			</h3>
-					
 		</div>
 	</div>
 	<div class="panel-body">
@@ -313,52 +355,38 @@ function addbook() {
 			</tr>
 		</c:if>
 
-		<div id="accordion">
+		<div id="accordion" >
 			<c:if test="${bookPageDTO.pageCount != 0 }">
 				<c:forEach items="${list }" var="Book" varStatus="status">
 
-					<h3>
+					<h3 onclick="detailbook('${Book.bookNo}');">
 						번호:${Book.bookNo}&nbsp;&nbsp;청구번호:${Book.bookCallnumber}&nbsp;&nbsp;&nbsp;&nbsp;제목:${Book.bookTitle}
 					</h3>
 					<!-- details Book-->
-					<div id="detailsbook" class="panel-body">
+					<div  class="panel-body">
 						<div id="libraryinfo" class="posts">
 							<div style="float: left;">
 								<div
 									style="width: 140px; height: 110px; overflow: hidden; margin-left: -20px;"
 									class="col-sm-4 col-md-3 bookimg">
-									<div class="thumbnail">
-										<img src="images/book/${Book.bookImg}" alt="없음."
-											style="width: 110px; height: auto;">
-									</div>
+									<div class="thumbnail" id="thumbnail${Book.bookNo}" style="height: auto;"></div>
 								</div>
 
-								<div>
-									<label>도서이름 : ${Book.bookTitle}</label>
-									</p>
-									<p>저자 : ${Book.bookWriter}</p>
-									<p>출판사 : ${Book.bookCompany}</p>
-									<p>청구번호 : ${Book.bookCallnumber}</p>
-									<p style="padding-left: 120px;">ISBN : ${Book.bookIsbn}</p>
-									<p>줄거리</p>
-									<p>
-									<pre>${Book.bookContent}</pre>
-									</p>
-								</div>
+								<div id="detailsbook${Book.bookNo}"></div>
 							</div>
 						</div>
-						
+
 						<c:if test="${not empty sessionScope.usr}">
-						<div style="margin-left: 50px; float: right;">
-							<input type="button" value="수정"	onclick="bookupdate('${data.bookNo}')"> 
-							<input type="button" value="삭제" onclick="bookdelete('${data.bookNo}')">
-						</div>
+							<div style="margin-left: 50px; float: right;">
+								<input type="button" value="수정"
+									onclick="bookupdate('${Book.bookNo}')"> 
+									<input	type="button" value="삭제" onclick="bookdelete('${Book.bookNo}')">
+							</div>
 						</c:if>
 					</div>
 				</c:forEach>
 			</c:if>
 		</div>
-	</div>
 	</div>
 </body>
 </html>

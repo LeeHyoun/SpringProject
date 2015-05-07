@@ -1,19 +1,38 @@
-package com.spring.DTO;
+package com.spring.dto;
+
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 public class BookDTO {
-	private int bookNo;      
+	
+	@NotEmpty
+	private int bookNo;
+	
 	private String genreCode;    
 	private String bookBringout;   
 	private String bookAddday;           
 	private String bookStored;    
 	private String bookCallnumber;   
+	
+	@Size(min=13, max=13)
+	@Pattern(regexp="[0-9]")
 	private String bookIsbn;   
-	private String bookImg;   
+	
+	@NotEmpty
+	private String bookImg;  
+	
+	
 	private int bookPrice;      
 	private String bookWriter;   
 	private String bookTitle;  
 	private String bookCompany;   
 	private String bookContent;
+	
+	@NotEmpty
 	private String bookState;
 	private int rowNum;
 	private String rentState;
@@ -21,42 +40,6 @@ public class BookDTO {
 	private String rentBooking;
 	
 	
-	public String getRentBooking() {
-		return rentBooking;
-	}
-	public void setRentBooking(String rentBooking) {
-		this.rentBooking = rentBooking;
-	}
-	public String getRentDueday() {
-		return rentDueday;
-	}
-	public void setRentDueday(String rentDueday) {
-		this.rentDueday = rentDueday;
-	}
-	/*public String getBookAddday() {
-		return bookAddday;
-	}
-	public void setBookAddday(String bookAddday) {
-		this.bookAddday = bookAddday;
-	}
-	public int getRowNum() {
-		return rowNum;
-	}
-	public void setRowNum(int rowNum) {
-		this.rowNum = rowNum;
-	}*/
-	public String getRentState() {
-		return rentState;
-	}
-	public void setRentState(String rentState) {
-		this.rentState = rentState;
-	}
-	public int getrowNum() {
-		return rowNum;
-	}
-	public void setrowNum(int rowNum) {
-		this.rowNum = rowNum;
-	}
 	public int getBookNo() {
 		return bookNo;
 	}
@@ -75,10 +58,10 @@ public class BookDTO {
 	public void setBookBringout(String bookBringout) {
 		this.bookBringout = bookBringout;
 	}
-	public String getbookAddday() {
+	public String getBookAddday() {
 		return bookAddday;
 	}
-	public void setbookAddday(String bookAddday) {
+	public void setBookAddday(String bookAddday) {
 		this.bookAddday = bookAddday;
 	}
 	public String getBookStored() {
@@ -141,6 +124,32 @@ public class BookDTO {
 	public void setBookState(String bookState) {
 		this.bookState = bookState;
 	}
+	public int getRowNum() {
+		return rowNum;
+	}
+	public void setRowNum(int rowNum) {
+		this.rowNum = rowNum;
+	}
+	public String getRentState() {
+		return rentState;
+	}
+	public void setRentState(String rentState) {
+		this.rentState = rentState;
+	}
+	public String getRentDueday() {
+		return rentDueday;
+	}
+	public void setRentDueday(String rentDueday) {
+		this.rentDueday = rentDueday;
+	}
+	public String getRentBooking() {
+		return rentBooking;
+	}
+	public void setRentBooking(String rentBooking) {
+		this.rentBooking = rentBooking;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "BookDTO [bookNo=" + bookNo + ", genreCode=" + genreCode
@@ -154,10 +163,6 @@ public class BookDTO {
 				+ rowNum + ", rentState=" + rentState + ", rentDueday="
 				+ rentDueday + ", rentBooking=" + rentBooking + "]";
 	}
-	
-	
-	
-	
 	
 	
 }

@@ -1,4 +1,4 @@
-package com.spring.Service;
+package com.spring.service;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.DAO.BookDAO;
-import com.spring.DTO.BookDTO;
-import com.spring.DTO.BookPageDTO;
+import com.spring.dao.BookDAO;
+import com.spring.dto.BookDTO;
+import com.spring.dto.BookPageDTO;
 
 @Service
 @Transactional

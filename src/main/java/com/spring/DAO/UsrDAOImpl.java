@@ -1,10 +1,10 @@
-package com.spring.DAO;
+package com.spring.dao;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.spring.DTO.UsrDTO;
+import com.spring.dto.UsrDTO;
 
 
 @Repository

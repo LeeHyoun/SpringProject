@@ -1,6 +1,6 @@
-package com.spring.DAO;
+package com.spring.dao;
 
-import com.spring.DTO.UsrDTO;
+import com.spring.dto.UsrDTO;
 
 public interface UsrDAO {
 	

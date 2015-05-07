@@ -1,4 +1,4 @@
-package com.spring.DAO;
+package com.spring.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.spring.DTO.BookDTO;
-import com.spring.DTO.BookPageDTO;
+import com.spring.dto.BookDTO;
+import com.spring.dto.BookPageDTO;
 
 @Repository
 public class BookDAOImpl implements BookDAO{

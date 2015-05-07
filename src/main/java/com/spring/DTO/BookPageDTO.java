@@ -1,4 +1,4 @@
-package com.spring.DTO;
+package com.spring.dto;
 
 public class BookPageDTO {
 	private int start; //조회시작

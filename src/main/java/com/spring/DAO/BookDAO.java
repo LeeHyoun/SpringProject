@@ -1,9 +1,9 @@
-package com.spring.DAO;
+package com.spring.dao;
 
 import java.util.List;
 
-import com.spring.DTO.BookDTO;
-import com.spring.DTO.BookPageDTO;
+import com.spring.dto.BookDTO;
+import com.spring.dto.BookPageDTO;
 
 public interface BookDAO {
 	public List<BookDTO> selectList(int pg,BookPageDTO  bookPageDTO);

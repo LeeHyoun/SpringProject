@@ -6,9 +6,9 @@
 <configuration>
 	
 	<typeAliases>
-		<typeAlias type="com.spring.DTO.BookDTO" alias="Book" />
-		<typeAlias type="com.spring.DTO.BookPageDTO" alias="BookPageDTO" />
-		<typeAlias type="com.spring.DTO.UsrDTO" alias="Usr" />
+		<typeAlias type="com.spring.dto.BookDTO" alias="Book" />
+		<typeAlias type="com.spring.dto.BookPageDTO" alias="BookPageDTO" />
+		<typeAlias type="com.spring.dto.UsrDTO" alias="Usr" />
 	</typeAliases>
 
 	<mappers>		

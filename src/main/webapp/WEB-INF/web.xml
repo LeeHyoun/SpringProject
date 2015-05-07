@@ -1,32 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
   <display-name>Servlet 3.0 Web Application</display-name>
+
   
-  
-  <!-- 디렉토리내의 모든 페이지로 이동할 시, 
-  		LoginCheckFilter에서 로그인 여부를 체크한다. -->
-<!--   <filter>
-          <filter-name>LoginCheck</filter-name>
-          <filter-class>
-                  com.spring.loggin.LoginFilter
-          </filter-class>
-  </filter>
-  <filter-mapping>
-          <filter-name>LoginCheck</filter-name>
-          <url-pattern>/WEB-INF/eyoonJSP/</url-pattern>
-  </filter-mapping> -->
-  
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value> 
-     	classpath:/spring/dbpool-context.xml
-     	/WEB-INF/sample-servlet.xml
-     </param-value>
-  </context-param>
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
-  <filter>
+  <filter> <!-- 모든 경로에서 들어오는 한글처리를 UTF-8 로 필터링 하겠다. -->
     <filter-name>encodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
     <init-param>
@@ -40,20 +17,36 @@
   </filter>
   <filter-mapping>
     <filter-name>encodingFilter</filter-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/</url-pattern>
   </filter-mapping>
-  <servlet>
+  
+  <context-param> <!--  dbpool-contxt 로 모든 서블릿과 필터들이 공유 -->
+    <param-name>contextConfigLocation</param-name>
+    <param-value> 
+    	classpath:spring/dbpool-context.xml
+    </param-value>
+  </context-param>
+ 
+  <listener> <!--dbpool-context 에 정의되어있는 것들을 모든 서블릿과 필터에 공유 -->
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <servlet> 
     <servlet-name>sample</servlet-name>
-    <servlet-class>
+    <servlet-class> <!-- 들어온 요청정보를 핸들링해주는 서블릿. -->
+       <!-- DispatcherServlet 은 해당 Request 에 맞는 Controller를 찾아서 매핑 시켜준다. -->
        org.springframework.web.servlet.DispatcherServlet
    </servlet-class>
+   	 <init-param>
+     <param-name>contextConfigLocation</param-name>
+     <param-value>classpath:spring/sample-servlet.xml</param-value>
+   	</init-param> 
     <load-on-startup>1</load-on-startup>
   </servlet>
+ 		 <!-- sample-Servlet에 대한 URL-pattern 을 정의  -->
   <servlet-mapping>
     <servlet-name>sample</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-  <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
-  </welcome-file-list>
-</web-app>
+  
+ </web-app>
