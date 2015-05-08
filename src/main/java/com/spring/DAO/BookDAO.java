@@ -10,5 +10,6 @@ public interface BookDAO {
 	public int selectCount();
 	public BookDTO getone(int bookno);
 	public BookDTO addBook(BookDTO bookDTO);
-
+	public void updateBook(BookDTO bookDTO);
+	public void deleteBook(BookDTO bookDTO);
 }

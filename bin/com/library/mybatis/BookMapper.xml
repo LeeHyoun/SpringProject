@@ -47,4 +47,15 @@
 		Insert into BOOK_TABLE (BOOK_NO,GENRE_CODE,BOOK_BRINGOUT,BOOK_ADDDAY,BOOK_STORED,BOOK_CALLNUMBER,BOOK_ISBN,BOOK_IMG,BOOK_PRICE,BOOK_WRITER,BOOK_TITLE,BOOK_COMPANY,BOOK_CONTENT,BOOK_STATE)	
 		values (#{bookNo},#{genreCode},#{bookBringout},sysdate,#{bookStored},#{bookCallnumber},#{bookIsbn},#{bookImg},#{bookPrice},#{bookWriter},#{bookTitle},#{bookCompany},#{bookContent},#{bookState})
 	</insert>
+	
+	<update id="updateBook" parameterType="Book">
+		update book_table set GENRE_CODE = #{genreCode},BOOK_BRINGOUT = #{bookBringout},BOOK_ADDDAY = to_char(sysdate,'yyyy/MM/dd'),
+		BOOK_STORED = #{bookStored}, BOOK_CALLNUMBER = #{bookCallnumber}, BOOK_ISBN = #{bookIsbn},BOOK_IMG = #{bookImg},BOOK_PRICE = #{bookPrice},
+		BOOK_WRITER = #{bookWriter},BOOK_TITLE = #{bookTitle},BOOK_COMPANY = #{bookCompany},BOOK_CONTENT = #{bookContent},BOOK_STATE = #{bookState} 
+		where BOOK_NO = #{bookNo} 
+	</update>
+	
+	<delete id="deleteBook" parameterType="Book"> 
+		DELETE FROM BOOK_TABLE WHERE BOOK_NO = #{bookNo}
+	</delete>
 </mapper>

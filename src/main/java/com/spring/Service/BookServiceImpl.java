@@ -39,4 +39,14 @@ public class BookServiceImpl implements BookService {
 	public BookDTO addBook(BookDTO bookDTO){
 		return bookDAO.addBook(bookDTO);
 	}
+	
+	@Override
+	public void updateBook(BookDTO bookDTO) {
+		bookDAO.updateBook(bookDTO);
+	}
+
+	@Override
+	public void deleteBook(BookDTO bookDTO) {
+		bookDAO.deleteBook(bookDTO);		
+	}
 }

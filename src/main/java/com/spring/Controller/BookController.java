@@ -25,15 +25,17 @@ public class BookController {
 	@Autowired    // bean 객체 주입
 	BookService bookService;
 	
+	private ModelAndView mav;
+	
 	final static int BLOCK = 5; 
 	final static int RECORD = 10; 
 	
 	@RequestMapping(value="/list", method={RequestMethod.POST, RequestMethod.GET})
-	public String list(
+	public ModelAndView list(
 			@RequestParam(value="page", required=false, defaultValue="1") int ipage, 
-			@Valid @ModelAttribute BookPageDTO bookPageDTO,
-			HttpServletRequest request,
-			Model model) throws Exception{
+			@Valid @ModelAttribute BookPageDTO bookPageDTO) throws Exception{
+		
+		mav = new ModelAndView();
 		
 		int count = bookService.selectCount(); 
 		int pageCount = count / RECORD;
@@ -49,11 +51,12 @@ public class BookController {
 		bookPageDTO.setPageCount(pageCount);
 		bookPageDTO.setPage(ipage);
 		
-		model.addAttribute("BLOCK", BLOCK);
-		model.addAttribute("list", list);
+		mav.addObject("BLOCK", BLOCK);
+		mav.addObject("Book", list);
+		mav.setViewName("booklist");
 		//model.addAttribute("bookPageDTO",bookPageDTO);
 		
-		return "booklist";
+		return mav;
 	}
 	
 	//도서상세보기
@@ -75,6 +78,40 @@ public class BookController {
 		bookService.addBook(bookDTO);
 		
 		return "booklist";
+	}
+	
+	@RequestMapping(value="/deletebook", method=RequestMethod.POST)
+	public void deleteBook(
+			@ModelAttribute BookDTO bookDTO,
+			@ModelAttribute BookPageDTO bookPageDTO,
+			HttpServletRequest request,
+			Model model) throws Exception {
+	
+		/*	HttpSession session = request.getSession();
+		UserDTO user = (UserDTO)session.getAttribute("logininfo");
+		
+		if(user == null){
+			return "redirect:loginform";
+		}*/
+   		
+		bookService.deleteBook(bookDTO);
+		
+		
+		/*return "redirect:booklist?page="+bookPageDTO.getPage();*/
+	}
+	
+	
+	@RequestMapping(value="bookupdate", method=RequestMethod.POST)
+	public ModelAndView bookupdate(@ModelAttribute BookDTO bookDTO,
+			BookPageDTO bookPageDTO	) throws Exception {
+		
+		System.out.println("update : " + bookDTO.toString());
+		bookService.updateBook(bookDTO);
+		
+		list(1,bookPageDTO);
+		
+		return mav;
+				
 	}
 
 }

@@ -52,4 +52,14 @@ public class BookDAOImpl implements BookDAO{
 		sqlSession.insert(NS + "addBook", bookDTO);
 		return bookDTO;
 	}
+	
+	@Override
+	public void updateBook(BookDTO bookDTO) {
+		sqlSession.update(NS + "updateBook", bookDTO);		
+	}
+
+	@Override
+	public void deleteBook(BookDTO bookDTO) {
+		sqlSession.delete(NS + "deleteBook", bookDTO);		
+	}
 }

@@ -9,7 +9,12 @@ public interface BookService {
 	//board
 	public int selectCount(); 
 	public List<BookDTO> selectList(int ipage, BookPageDTO bookPageDTO); 
+	
 	public BookDTO getone(int bookno);
+	
 	public BookDTO addBook(BookDTO bookDTO);
+	
+	public void updateBook(BookDTO bookDTO);
+	public void deleteBook(BookDTO bookDTO);
 
 }	
